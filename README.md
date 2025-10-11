@@ -1,5 +1,8 @@
 ## Overview
 
+**CAUTION: These instructions require changes to the currently released version of Spell Jam from a [PR](https://adafruit-playground.com/u/retiredwizard/pages/your-own-tts-engine-for-the-fruit-jam-spell-jam-app) that is currently being reviewed and not yet merged.**
+
+
 The [Spell Jam](https://learn.adafruit.com/spell-jam-app-on-fruit-jam/overview) app on the [Fruit Jam](https://www.adafruit.com/product/6200) is a twist on a classic electronic toy. Check out the [Spell Jam learn guide](https://learn.adafruit.com/spell-jam-app-on-fruit-jam/overview) to lean all about it.
 
 By default, Spell Jam uses the Amazon Polly Text-to-Speech (TTS) service to create audio from the entered text. While Amazon's service can be used for free during a trial period, it does require an AWS account.
