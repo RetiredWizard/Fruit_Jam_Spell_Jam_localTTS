@@ -7,7 +7,6 @@
     https://github.com/RetiredWizard/Fruit_Jam_Spell_Jam_localTTS
 """
 
-# tts_kani.py
 import json
 import adafruit_connection_manager
 import adafruit_requests
