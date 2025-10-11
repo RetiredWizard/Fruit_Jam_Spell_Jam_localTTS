@@ -65,7 +65,7 @@ async def health_check():
     """Check if server is ready"""
     return {
         "status": "healthy",
-        "tts_initialized": generator is not None and player is not None
+        "tts_initialized": generator is not None and (kitten or player is not None)
     }
 
 
