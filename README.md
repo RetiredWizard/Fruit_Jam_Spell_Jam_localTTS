@@ -1,4 +1,6 @@
-KittenTTS/Kani-TTS engine for Fruit Jam Spell Jam. Install and run the kani-tts or KittenTTS AI server on your
+KittenTTS/Kani-TTS engine for the [Fruit Jam Spell Jam](https://learn.adafruit.com/spell-jam-app-on-fruit-jam/overview) app  
+
+Install and run the kani-tts or KittenTTS AI server on your
 local network following the instructions at: https://github.com/nineninesix-ai/kani-tts or 
 https://learn.adafruit.com/speech-synthesis-on-raspberry-pi-with-kittentts/kittentts-setup
 
