@@ -37,7 +37,14 @@ Once the TTS model has been installed, download the server script ([server.py](h
 source venv/bin/activate
 python server.py
 ```
-Your TTS server will now be running on port 8000.
+Your TTS server will now be running on port 8000.  
+
+**NOTE: If your server is running a local firewall, you may need to add a firewall rule to allow TCP traffic to port 8000 from devices on your local network!!!**  
+
+For *ufw* on linux:  
+```
+sudo ufw allow from 192.168.0.0/16 to any port 8000 proto tcp
+```
 
 ## Configuring Spell Jam to use the local server
 
