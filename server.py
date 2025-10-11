@@ -51,13 +51,13 @@ class TTSRequest(BaseModel):
 async def startup_event():
     """Initialize models on startup"""
     global generator, player, kitten
-    print("🚀 Initializing TTS models...")
+    print("Initializing TTS models...")
     if kitten:
         generator = KittenTTS("KittenML/kitten-tts-nano-0.2")
     else:
         generator = TTSGenerator()
         player = LLMAudioPlayer(generator.tokenizer)
-    print("✅ TTS models initialized successfully!")
+    print("TTS models initialized successfully!")
 
 
 @app.get("/health")
@@ -153,5 +153,5 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    print("🎤 Starting Kani TTS Server...")
+    print("Starting Kani TTS Server...")
     uvicorn.run(app, host="0.0.0.0", port=8000)
