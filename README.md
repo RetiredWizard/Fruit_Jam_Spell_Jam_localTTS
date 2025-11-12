@@ -1,3 +1,5 @@
+**This update to the Fruit Jam Spell Jam app is described in an [Adafruit Playground Note](https://adafruit-playground.com/u/retiredwizard/pages/your-own-tts-engine-for-the-fruit-jam-spell-jam-app)**
+
 ## Overview
 
 The [Spell Jam](https://learn.adafruit.com/spell-jam-app-on-fruit-jam/overview) app on the [Fruit Jam](https://www.adafruit.com/product/6200) is a twist on a classic electronic toy. Check out the [Spell Jam learn guide](https://learn.adafruit.com/spell-jam-app-on-fruit-jam/overview) to lean all about it.
