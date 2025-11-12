@@ -103,10 +103,10 @@ class WordFetcherTTS():
                 print(f"Response: {response.text}")
                 return None
 
-        except:  # pylint: disable=broad-except
+        except Exception as e1:  # pylint: disable=broad-except
             # Try a second time in case the server was sleeping....
             try:
-                print("Resending request...")
+                print("Resending request... {e1}")
                 response = self.requests.post(url, headers=headers, data=payload, timeout=15)
 
                 if response.status_code == 200:
@@ -115,6 +115,6 @@ class WordFetcherTTS():
                     print(f"Error: HTTP {response.status_code}")
                     print(f"Response: {response.text}")
                     return None
-            except Exception as e:  # pylint: disable=broad-except
-                print(f"Request failed: {e}")
+            except Exception as e2:  # pylint: disable=broad-except
+                print(f"Request failed: {e2}")
                 return None
