@@ -116,6 +116,5 @@ class WordFetcherTTS():
                     print(f"Response: {response.text}")
                     return None
             except Exception as e:  # pylint: disable=broad-except
-                pass
-            print(f"Request failed: {e}")
-            return None
+                print(f"Request failed: {e}")
+                return None
