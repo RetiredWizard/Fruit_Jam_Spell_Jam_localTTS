@@ -6,7 +6,7 @@ The [Spell Jam](https://learn.adafruit.com/spell-jam-app-on-fruit-jam/overview) 
 
 By default, Spell Jam uses the Amazon Polly Text-to-Speech (TTS) service to create audio from the entered text. While Amazon's service can be used for free during a trial period, it does require an AWS account.
 
-If you'd prefer not to create an Amazon AWS account, you can instead run a local TTS server on your home network using open-source models like [KittenTTS](https://github.com/KittenML/KittenTTS) or [Kani-TTS](https://github.com/nineninesix-ai/kani-tts).
+If you'd prefer not to create an Amazon AWS account, you can instead run a local TTS server on your home network using open-source models like [KittenTTS](https://github.com/KittenML/KittenTTS), [Kani-TTS](https://github.com/nineninesix-ai/kani-tts) or [eSpeak](https://espeak.sourceforge.net/).
 
 ## Installing a Text-to-Speech Model
 
@@ -15,19 +15,33 @@ Two TTS AI models that have been tested with the Spell Jam local backend:
 - [KittenTTS](https://github.com/KittenML/KittenTTS) - lightweight, will run on a Raspberry Pi 4/5  
 - [Kani-TTS](https://github.com/nineninesix-ai/kani-tts)  - newer, but may require an Nvidia GPU.
 
-Before installing either model, create and/or activate a dedicated Python virtual environment.
+Legacy software TTS application:
+
+- [eSpeak](https://espeak.sourceforge.net/) - Initially released in 2006, a free and open-source compact, speech synthesizer.
+
+**Before installing any of the TTS systems, create and/or activate a dedicated Python virtual environment.**
 ```
 python3 -m venv venv
 source venv/bin/activate
 ```
+Then, you'll need to install three additional dependencies:  
+```
+pip install uvicorn scipy fastapi numpy pydantic
+```
+
+### eSpeak
+
+To install the eSpeak software type the following commands:
+
+```
+sudo apt update
+sudo apt install espeak
+```
+
 ### KittenTTS
 
 To install KittenTTS follow the instructions outlined in the [Speech Synthesis On Raspberry Pi with KittenTTS](https://learn.adafruit.com/speech-synthesis-on-raspberry-pi-with-kittentts/kittentts-setup) Learn Guide.
 
-After installation, you'll need to install three additional dependencies:  
-```
-pip install uvicorn scipy fastapi
-```
 ### Kani-TTS
 
 To install Kani-TTS, follow the "setup" instructions from the Kani-TTS [GitHub project page](https://github.com/nineninesix-ai/kani-tts).
