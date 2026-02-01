@@ -55,6 +55,9 @@ python server.py
 ```
 Your TTS server will now be running on port 8000.  
 
+If you have multiple TTS solutions installed you can force the server to use one of the 
+three supported options by adding one of the model names (kitten, espeak or kani) on the `python server.py [model]` command line.
+
 **NOTE: If your server is running a local firewall, you may need to add a firewall rule to allow TCP traffic to port 8000 from devices on your local network!!!**  
 
 For *ufw* on linux:  
