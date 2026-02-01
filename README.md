@@ -24,7 +24,7 @@ Legacy software TTS application:
 python3 -m venv venv
 source venv/bin/activate
 ```
-Then, you'll need to install three additional dependencies:  
+Then, you'll need to install several additional dependencies:  
 ```
 pip install uvicorn scipy fastapi numpy pydantic
 ```
