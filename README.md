@@ -13,7 +13,7 @@ If you'd prefer not to create an Amazon AWS account, you can instead run a local
 Two TTS AI models that have been tested with the Spell Jam local backend:
 
 - [KittenTTS](https://github.com/KittenML/KittenTTS) - lightweight, will run on a Raspberry Pi 4/5  
-- [Kani-TTS](https://github.com/nineninesix-ai/kani-tts)  - newer, but may require an Nvidia GPU.
+- [Kani-TTS](https://github.com/nineninesix-ai/kani-tts)  - newer, but may require an Nvidia GPU. (as of 2/2026 Kani no longer works with server.py)
 
 Legacy software TTS application:
 
