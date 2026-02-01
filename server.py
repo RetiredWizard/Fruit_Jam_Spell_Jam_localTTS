@@ -19,7 +19,7 @@ try:
 except ImportError:
     try:
         from kittentts import KittenTTS
-    except:
+    except ImportError:
         pass
 
 kitten = 'KittenTTS' in globals()  # Check if KittenTTS is available
