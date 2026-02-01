@@ -17,7 +17,10 @@ try:
     from generation import TTSGenerator
     from nemo.utils.nemo_logging import Logger
 except ImportError:
-    from kittentts import KittenTTS
+    try:
+        from kittentts import KittenTTS
+    except:
+        pass
 
 kitten = 'KittenTTS' in globals()  # Check if KittenTTS is available
 kani = 'TTSGenerator' in globals()
