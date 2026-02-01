@@ -1,12 +1,15 @@
 """FastAPI server for Kani/Kitten TTS with streaming support"""
 
+import sys
 import io
+import subprocess
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from pydantic import BaseModel
 from typing import Optional
 import numpy as np
+from scipy.io import wavfile
 from scipy.io.wavfile import write as wav_write
 
 try:
@@ -17,13 +20,31 @@ except ImportError:
     from kittentts import KittenTTS
 
 kitten = 'KittenTTS' in globals()  # Check if KittenTTS is available
+kani = 'TTSGenerator' in globals()
+espeak = False
+
+if len(sys.argv) > 1:
+    if sys.argv[1].upper() == "KITTEN":
+        kitten = True
+        kani = False
+        espeak = False
+    elif sys.argv[1].upper() == "KANI":
+        kani = True
+        kitten = False
+        espeak = False
+    elif sys.argv[1].upper() == "ESPEAK":
+        espeak = True
+        kitten = False
+        kani = False
 
 if kitten:
-    app = FastAPI(title="Kitten TTS API", version="1.0.0")
-else:
+    app = FastAPI(title="Kitten TTS API", version="1.0.1")
+elif kani:
     nemo_logger = Logger()
     nemo_logger.remove_stream_handlers()
-    app = FastAPI(title="Kani TTS API", version="1.0.0")
+    app = FastAPI(title="Kani TTS API", version="1.0.1")
+else:
+    app = FastAPI(title="eSpeak TTS API", version="1.0.1")
 
 # Add CORS middleware to allow client.html to connect
 app.add_middleware(
@@ -50,14 +71,29 @@ class TTSRequest(BaseModel):
 @app.on_event("startup")
 async def startup_event():
     """Initialize models on startup"""
-    global generator, player, kitten
+    global generator, player, kitten, espeak, kani
     print("Initializing TTS models...")
     if kitten:
+        kani = False
+        print('kitten')
         generator = KittenTTS("KittenML/kitten-tts-nano-0.2")
-    else:
+    elif kani:
+        print('kani')
         generator = TTSGenerator()
         player = LLMAudioPlayer(generator.tokenizer)
-    print("TTS models initialized successfully!")
+    else:
+        command = ["espeak","--version"]
+        try:
+            result = subprocess.run(command)
+            generator = True
+            espeak = True
+            print('espeak')
+        except:
+            espeak = False
+            pass
+
+    if generator is not None and (kitten or (player is not None) or espeak):
+        print("TTS models initialized successfully!")
 
 
 @app.get("/health")
@@ -65,7 +101,7 @@ async def health_check():
     """Check if server is ready"""
     return {
         "status": "healthy",
-        "tts_initialized": generator is not None and (kitten or player is not None)
+        "tts_initialized": generator is not None and (kitten or (player is not None) or espeak)
     }
 
 
@@ -74,12 +110,12 @@ async def generate_speech(request: TTSRequest):
     """Generate complete audio file (non-streaming)"""
     if not generator:
         raise HTTPException(status_code=503, detail="TTS models not initialized")
-    if not kitten and not player:
+    if not kitten and not player and not espeak:
         raise HTTPException(status_code=503, detail="Audio player not initialized")
 
     try:
         # Create audio writer
-        if not kitten:
+        if kani:
             audio_writer = StreamingAudioWriter(
                 player,
                 output_file=None,  # We won't write to file
@@ -104,7 +140,7 @@ async def generate_speech(request: TTSRequest):
 
             # Concatenate all chunks
             full_audio = np.concatenate(audio_writer.audio_chunks)
-        else:
+        elif kitten:
             # For KittenTTS, generate directly
 
             # remove Kani voice prefix
@@ -112,9 +148,20 @@ async def generate_speech(request: TTSRequest):
             full_audio = generator.generate(
                 request.text[request.text.find(":")+2:]+"     Done", voice='expr-voice-2-f')
 
-        # Convert float32 audio (-1.0 to 1.0) to 16-bit PCM
-        audio_int16 = np.clip(full_audio, -1.0, 1.0)
-        audio_int16 = (audio_int16 * 32767).astype(np.int16)
+        elif espeak:
+            # espeak sometimes misses the first character so pad start with spaces
+            command = ["espeak", "--stdout", "    "+request.text[request.text.find(":")+2:]]
+            result = subprocess.run(command, capture_output=True)
+            full_audio = result.stdout
+
+            # 2. Treat the bytes like a file and read the numerical data
+            # io.BytesIO(wav_bytes) allows scipy to "read" the data without saving to disk
+            samplerate, audio_int16 = wavfile.read(io.BytesIO(full_audio))
+
+        if not espeak:
+            # Convert float32 audio (-1.0 to 1.0) to 16-bit PCM
+            audio_int16 = np.clip(full_audio, -1.0, 1.0)
+            audio_int16 = (audio_int16 * 32767).astype(np.int16)
 
         # Write as 16-bit WAV
         wav_buffer = io.BytesIO()
